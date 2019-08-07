@@ -11,8 +11,8 @@ clear all
 close all
 rng('default')
 
-totalMembers = 10; % members in the swarm
-maxIterations = 10; % max swaps to run
+totalMembers = 6; % members in the swarm
+maxIterations = 20; % max swaps to run
 
 % format: memberNum(member, iteration)
 
@@ -64,4 +64,16 @@ memberNum
 
 
 plot(stDev)
+xlabel('standard deviation')
+ylabel('iteration')
+
+x = [1:maxIterations]
+
+figure(2)
+plot(x,memberNum)
+
+hline = refline(0,trueMean);
+hline.Color = 'red';
+hline.LineStyle = ':';
+
 
