@@ -11,8 +11,8 @@ clear all
 close all
 rng('default')
 
-totalMembers = 6; % members in the swarm
-maxIterations = 20; % max swaps to run
+totalMembers = 100; % members in the swarm
+maxIterations = 110; % max swaps to run
 
 % format: memberNum(member, iteration)
 
@@ -55,25 +55,39 @@ for j = 2:maxIterations % start at 2 since the first one is the initial creation
     % shuffle?
     %memberNum = memberNum(randperm(size(memberNum,1)),:);
     
+    % break early if convergence below this amount
+    if stDev(j) < 0.05
+        maxIterations = j;
+        fprintf('*** Early break *** \n')
+        break
+    end
+    
 end
 
-mean(memberNum(:,1)) % 'starting' mean
+%mean(memberNum(:,1)) % 'starting' mean fyi
 
-memberNum
-%memberNum(:,maxIterations)
-
+% output stats
+fprintf('Mean:\t%.2f\n', trueMean)
+fprintf('Min:\t%.2f\n', min(memberNum(:,maxIterations)))
+fprintf('Max:\t%.2f\n', max(memberNum(:,maxIterations)))
+fprintf('StDev:\t%.2f\n', stDev(maxIterations))
+fprintf('Loops:\t%i\n',maxIterations)
 
 plot(stDev)
 xlabel('standard deviation')
 ylabel('iteration')
+xlim([1, maxIterations])
 
-x = [1:maxIterations]
+x = [1:maxIterations]; % for plotting
 
 figure(2)
 plot(x,memberNum)
+xlabel('iteration')
+ylabel('member value')
+xlim([1, maxIterations])
+grid on
 
 hline = refline(0,trueMean);
-hline.Color = 'red';
+hline.Color = 'black';
 hline.LineStyle = ':';
-
-
+hline.LineWidth = 1;
