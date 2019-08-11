@@ -9,7 +9,7 @@
 clc
 clear all
 close all
-rng('default')
+rng('shuffle')
 
 totalMembers = 100; % members in the swarm
 maxIterations = 110; % max swaps to run
